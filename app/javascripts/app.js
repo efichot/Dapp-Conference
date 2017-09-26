@@ -23,14 +23,18 @@
     
     Conference.setProvider(web3.currentProvider); //set provider
 
-    Conference.deployed().then((conference) => {
+    Conference.new({ from: accounts[0], gas: 3141592 }).then((conference) => {
       console.log(conference.address); // address from the contract
-      const ticketPrice = web3.toWei(0.5,'ether');
+      const ticketPrice = web3.toWei(0.05,'ether');
       const initialBalance = web3.eth.getBalance(conference.address).toNumber();
       console.log('initial balance is ==>  ' + initialBalance); // initial balance of smart contract
       conference.buyTicket({ from: accounts[1], value: ticketPrice }).then(() => {
-        const balance = web3.eth.getBalance(conference.address).toNumber();
+        let balance = web3.eth.getBalance(conference.address).toNumber();
         console.log('balance after a user buy a ticket ==>  ' + balance); // balance after user buy a ticket
+        conference.refundTicket(accounts[1], ticketPrice, { from: accounts[0] }).then(() => {
+          balance = web3.eth.getBalance(conference.address).toNumber();
+          console.log('balance after refund a user ==>  ' + balance); // balance after refund a user
+        })
       });
     }); // my Conference address ( my contract address )
 
