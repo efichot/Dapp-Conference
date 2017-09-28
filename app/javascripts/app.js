@@ -18,23 +18,28 @@
      window.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
    }
 
-   var accounts = web3.eth.accounts; // all the address users in my testrpc blockchain
-   console.log(accounts);
-    
+   var accounts = web3.eth.accounts; // all the address users in my testrpc blockchain but useless if you select user by metamask so the accounts array = [currentUser]
+    console.log(accounts);
+
    Conference.setProvider(web3.currentProvider); //set provider
 
    Conference.new({ from: accounts[0], gas: 3141592 }).then((conference) => {  // my Conference address ( my contract address )
+     //console.log('ee');
      console.log(conference.address); // address from the contract
-     const ticketPrice = web3.toWei(0.05,'ether');
-     const initialBalance = web3.eth.getBalance(conference.address).toNumber();
-     console.log('initial balance is ==>  ' + initialBalance); // initial balance of smart contract
-     conference.buyTicket({ from: accounts[1], value: ticketPrice }).then(() => {
-        let balance = web3.eth.getBalance(conference.address).toNumber();
-        console.log('balance after a user buy a ticket ==>  ' + balance); // balance after user buy a ticket
-        conference.refundTicket(accounts[1], ticketPrice, { from: accounts[0] }).then(() => {
-          balance = web3.eth.getBalance(conference.address).toNumber();
-          console.log('balance after refund a user ==>  ' + balance); // balance after refund a user
-        })
-      });
+    //  const ticketPrice = web3.toWei(0.05,'ether');
+    //  const initialBalance = web3.eth.getBalance(conference.address).toNumber();
+    //  console.log('initial balance is ==>  ' + initialBalance); // initial balance of smart contract
+    //  conference.buyTicket({ from: accounts[1], value: ticketPrice }).then(() => {
+    //     let balance = web3.eth.getBalance(conference.address).toNumber();
+    //     console.log('balance after a user buy a ticket ==>  ' + balance); // balance after user buy a ticket
+    //     conference.refundTicket(accounts[1], ticketPrice, { from: accounts[0] }).then(() => {
+    //       balance = web3.eth.getBalance(conference.address).toNumber();
+    //       console.log('balance after refund a user ==>  ' + balance); // balance after refund a user
+    //     })
+    //   });
+   }, (err) => {
+    console.log('Some trouble to deploy the contract: ' + err);
    });
+
+
  });
