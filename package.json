@@ -33,5 +33,10 @@
     "web3": "^0.18.4",
     "webpack": "^2.7.0",
     "webpack-dev-server": "^2.8.2"
+  },
+  "dependencies": {
+    "ethjs": "^0.2.8",
+    "ethjs-contract": "^0.1.9",
+    "ethjs-query": "^0.2.9"
   }
 }
